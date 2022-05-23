@@ -269,6 +269,12 @@ return [
             'route'  => 'tags.index',
             'icon' => 'fas fa-fw fa-tags',
         ],
+        ['header' => 'Formualrio de Contacto'],
+        [
+            'text' => 'Contáctanos',
+            'route'  => 'contacto.pintar',
+            'icon' => 'fas fa-fw fa-paper-plane',
+        ],
 
 
     ],

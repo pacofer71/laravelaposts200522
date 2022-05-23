@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PostController, CategoryController, TagController};
+use App\Http\Controllers\mail\ContactoController;
 use App\Models\{Post, User, Category};
 use Illuminate\Support\Facades\Route;
 
@@ -36,11 +37,17 @@ Route::get('prueba', function(){
     //$user = $post->user;
    // return $user;
    //return $post->tags;
-   $post=Post::find(12);
+  // $post=Post::find(12);
     //return $post->tags;
-   return $post->tags->contains('id', 3)? "SI": "NO";
+  // return $post->tags->contains('id', 3)? "SI": "NO";
+
+   $post=Post::where('category_id', 1)->whereHas('tags', function($q){
+        $q->where('tags.nombre', 'Idiomas');
+   })->get();
+   return $post;
 
 });
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -58,3 +65,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->resource('tags', TagController::class);
+
+//rutas para el formulario de contacto
+Route::middleware(['auth:sanctum', 'verified'])->get('contacto', [ContactoController::class, 'pintarFormulario'])->name('contacto.pintar');
+Route::middleware(['auth:sanctum', 'verified'])->post('contacto', [ContactoController::class, 'procesarFormulario'])->name('contacto.procesar');
